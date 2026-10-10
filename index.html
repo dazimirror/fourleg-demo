@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="四腿式起落装置仿真演示：MuJoCo基础控制与残差PPO对比，以及Adams多体动力学模型着陆演示。">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="theme-color" content="#16304c">
+  <title>四腿式起落装置 · 仿真演示</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js?v=2" defer></script>
+</head>
+<body>
+  <a class="skip" href="#demo">跳到视频演示</a>
+  <header class="topbar wrap">
+    <a class="brand" href="#"><span class="brand-mark" aria-hidden="true">四</span><span>机器人式起落装置<small>ROBOTIC LANDING GEAR</small></span></a>
+    <nav aria-label="页面导航"><a href="#demo">仿真演示</a><a href="#approach">研究思路</a><a href="#results">结果说明</a></nav>
+    <button class="share" id="share" type="button">复制链接 <span aria-hidden="true">↗</span></button>
+  </header>
+  <main>
+    <section class="hero wrap" aria-labelledby="title">
+      <div><p class="eyebrow">多地形着陆 · 控制与学习</p><h1 id="title">让着陆过程，<br><span>看得见、讲得清。</span></h1><p class="intro">四腿式起落装置在非平整地形上的着陆仿真。<br class="desktop-break">从基础控制与残差强化学习对比，到多体动力学模型验证。</p></div>
+      <div class="hero-note"><span class="small-label">本页展示</span><strong>2 <small>个仿真平台</small><span> / </span>8 <small>段实验视频</small></strong><p>选择平台与工况，即可在线播放。<br>无需安装仿真软件，支持手机与全屏观看。</p><a href="#demo">开始观看 <span aria-hidden="true">↓</span></a></div>
+    </section>
+
+    <section class="showcase wrap" id="demo" aria-labelledby="demo-heading">
+      <div class="section-head"><div><p class="eyebrow">01 / DEMONSTRATIONS</p><h2 id="demo-heading">仿真演示</h2></div><div class="platforms" role="group" aria-label="选择仿真平台"><button type="button" data-platform="mujoco" aria-pressed="true">MuJoCo <span>04</span></button><button type="button" data-platform="adams" aria-pressed="false">Adams <span>04</span></button></div></div>
+      <div class="platform-description"><span class="dot" aria-hidden="true"></span><p id="platform-description">基础控制器与基础控制器＋PPO，在相同工况下对比。</p></div>
+      <div class="viewer-grid">
+        <div class="viewer-main">
+          <div class="video-shell"><video id="player" controls playsinline preload="metadata" poster="media/mujoco-slope.png" aria-label="MuJoCo约7度斜坡对比演示"><source src="media/mujoco-slope.mp4" type="video/mp4">浏览器不支持视频播放，请使用下方的原视频链接。</video></div>
+          <p id="video-error" class="error" hidden>视频暂时未能加载。请检查网络，或使用下方“打开原视频”链接。</p>
+          <div class="video-caption"><div><p class="small-label" id="case-tag">MUJOCO / 斜坡工况</p><h3 id="case-title">约 7° 斜坡着陆</h3></div><a id="video-link" href="media/mujoco-slope.mp4" target="_blank" rel="noopener">打开原视频 ↗</a></div>
+          <p id="case-description" class="case-description">在相同斜坡工况下，对比基础控制器与加入足力残差 PPO 后的平台姿态和足力变化。</p>
+          <div class="watch-note"><span>观察重点</span><p id="case-focus">先看左右平台倾角，再看下方四足接触力和 PPO 残差曲线。PPO 主要在稳定支撑阶段介入。</p></div>
+        </div>
+        <aside class="playlist" aria-label="工况列表"><div class="playlist-head"><h3>选择工况</h3><span id="case-count">4 段视频</span></div><div id="case-list"></div><p class="playlist-note" id="playlist-note">左侧：V2.5R-S 基础控制器<br>右侧：基础控制器＋足力残差 PPO</p></aside>
+      </div>
+      <p class="footnote">视频包含慢放与曲线叠加；播放时长不等于实际仿真时长。所有画面均为仿真结果，不是真机实验。</p>
+      <noscript><p>请启用 JavaScript 以切换全部工况。仍可使用上方播放器观看斜坡视频。</p></noscript>
+    </section>
+
+    <section class="approach wrap" id="approach" aria-labelledby="approach-heading"><div class="section-head"><div><p class="eyebrow">02 / APPROACH</p><h2 id="approach-heading">两种仿真平台，各有分工。</h2></div></div>
+      <div class="approach-grid"><article><span class="step">01</span><h3>基础控制</h3><p>根据平台姿态与接触状态分配期望足力，通过导纳补偿调整足端目标，再由关节控制驱动落架运动。</p></article><article><span class="step">02</span><h3>MuJoCo · 策略训练与对照</h3><p>在基础控制器上加入四维足力残差 PPO，通过相同工况的对照实验，分析姿态、受力与安全性的变化。</p></article><article><span class="step">03</span><h3>Adams · 多体动力学验证</h3><p>在 MATLAB/Simulink 与 Adams 联合仿真中观察详细机构的着陆表现。本页四段 Adams 视频均为基础控制器演示，PPO 关闭。</p></article></div>
+    </section>
+
+    <section class="results wrap" id="results" aria-labelledby="results-heading"><div class="section-head"><div><p class="eyebrow">03 / FINDINGS & LIMITS</p><h2 id="results-heading">展示效果，也保留结果边界。</h2></div></div>
+      <div class="results-grid"><div class="result-stat"><span class="small-label">稳定阶段倾角 RMS</span><strong>0.925° <span>→</span> 0.900°</strong><p>约改善 2.69%</p></div><div class="result-stat"><span class="small-label">足力跟踪 RMSE</span><strong>5.91 N <span>→</span> 6.16 N</strong><p class="caution">约恶化 4.14%，仍需改进</p></div><div class="result-context"><h3>这些数字说明什么？</h3><p>以上来自 Stage12 中 84 个共同可控工况的汇总，比较视频所用 PPO 策略与基础控制器。姿态小幅改善，不代表所有指标全面提升；也不是全部 100 个工况的统计结论。</p></div></div>
+      <details><summary>展开查看版本与验证范围</summary><div class="details-body"><p>MuJoCo 使用 V2.5R-S 基础控制框架；视频策略 seed 20260911，优选检查点为 153,600 步。PPO 接收 77 维观测，输出四维期望足力残差，主要作用于稳定支撑阶段。</p><p>Adams 展示 V2.6 / V2.7 力矩控制支线。它们不能作为 PPO 已在 Adams 中取得改善的证据。下降过程包含上层辅助，不能把全部稳定效果归因于落架独立控制。</p><p>跨仿真器验证不等于真机迁移验证。当前页面展示既有实验录像，不提供实时仿真，也不包含源码、策略权重或训练文件。</p></div></details>
+    </section>
+  </main>
+  <footer class="wrap"><p>四腿式起落装置 · 仿真演示</p><span>精选实验记录 / 2026.10</span><a href="#">回到顶部 ↑</a></footer>
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+</body>
+</html>
